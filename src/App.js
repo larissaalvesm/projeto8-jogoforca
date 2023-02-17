@@ -1,4 +1,5 @@
 import Jogo from "./Jogo";
+import palavras from "./palavras";
 
 function App() {
   return (
