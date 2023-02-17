@@ -4,7 +4,7 @@ import palavras from "./palavras";
 function App() {
   return (
     <div>
-      <Jogo />
+      <Jogo palavras={palavras} />
     </div>
   );
 }
