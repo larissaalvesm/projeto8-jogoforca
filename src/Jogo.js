@@ -17,9 +17,12 @@ function Jogo(props) {
     const [palavra, setPalavra] = useState([]);
     const [numErros, setNumErros] = useState(0);
     const [imgForca, setImgForca] = useState(forca0);
+    const [palavraRevelada, setPalavraRevelada] = useState("");
 
     function escolherPalavra() {
-
+        setNumErros(0);
+        setImgForca(forca0);
+        setPalavraRevelada("");
         setHabilitarLetra("letra-habilitada");
 
         const indiceAleatorio = Math.floor(Math.random() * palavras.length);
@@ -33,13 +36,14 @@ function Jogo(props) {
         }
         setPalavra(palavraSorteadaEscondida);
     }
-
+    console.log(palavraSorteada);
     function letraSelecionada(letra) {
 
         const letraMin = letra.toLowerCase();
         const palavraPreenchida = [];
 
         if (palavraSorteada.includes(letraMin)) {
+
             for (let i = 0; i < palavraSorteada.length; i++) {
                 if (palavraSorteada[i] === letraMin) {
                     palavraPreenchida.push(letraMin);
@@ -50,18 +54,30 @@ function Jogo(props) {
                 }
             }
             setPalavra(palavraPreenchida);
+
+            if (!palavraPreenchida.includes("_ ")) {
+                setHabilitarLetra("letra-desabilitada");
+                setPalavraRevelada("verde");
+            }
+
         } else {
             let novoNumErros = numErros + 1;
-            let novaImgForca = setarImagemForca(novoNumErros);
+            let novaImgForca = pegarImagemForca(novoNumErros);
 
-            console.log(novaImgForca);
-
-            setNumErros(novoNumErros);
-            setImgForca(novaImgForca);
+            if (novoNumErros < 6) {
+                setNumErros(novoNumErros);
+                setImgForca(novaImgForca);
+            } else if (novoNumErros = 6) {
+                setNumErros(novoNumErros);
+                setImgForca(novaImgForca);
+                setHabilitarLetra("letra-desabilitada");
+                setPalavra(palavraSorteada);
+                setPalavraRevelada("vermelho");
+            }
         }
     }
 
-    function setarImagemForca(erros) {
+    function pegarImagemForca(erros) {
         switch (erros) {
             case 1:
                 return forca1;
@@ -83,8 +99,8 @@ function Jogo(props) {
             <div className="container-superior">
                 <img src={imgForca} alt="forca-inicial" />
                 <div className="container-direita">
-                    <button disabled={palavra.length === 0 ? false : true} onClick={escolherPalavra}>Escolher Palavra</button>
-                    <div className="palavra-escolhida">{palavra}</div>
+                    <button disabled={palavra.length === 0 || palavraRevelada === "verde" ? false : true} onClick={escolherPalavra}>Escolher Palavra</button>
+                    <div className={`palavra-escolhida ${palavraRevelada}`}>{palavra}</div>
                 </div>
             </div>
             <Letras habilitarLetra={habilitarLetra} letraSelecionada={letraSelecionada} />
