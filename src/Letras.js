@@ -11,6 +11,7 @@ function Letras(props) {
                     disabled={habilitarLetra === "letra-desabilitada" ? true : false}
                     className={habilitarLetra}
                     onClick={() => letraSelecionada(letra)}
+                    data-test="letter"
                 >
                     {letra}
                 </button>)}

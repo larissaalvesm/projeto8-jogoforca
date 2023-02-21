@@ -97,10 +97,10 @@ function Jogo(props) {
     return (
         <div className="container">
             <div className="container-superior">
-                <img src={imgForca} alt="forca-inicial" />
+                <img src={imgForca} alt="forca-inicial" data-test="game-image" />
                 <div className="container-direita">
-                    <button disabled={palavra.length === 0 || palavraRevelada === "verde" ? false : true} onClick={escolherPalavra}>Escolher Palavra</button>
-                    <div className={`palavra-escolhida ${palavraRevelada}`}>{palavra}</div>
+                    <button disabled={palavra.length === 0 || palavraRevelada === "verde" ? false : true} onClick={escolherPalavra} data-test="choose-word">Escolher Palavra</button>
+                    <div className={`palavra-escolhida ${palavraRevelada}`} data-test="word">{palavra}</div>
                 </div>
             </div>
             <Letras habilitarLetra={habilitarLetra} letraSelecionada={letraSelecionada} />
