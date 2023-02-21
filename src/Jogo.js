@@ -12,7 +12,8 @@ function Jogo(props) {
 
     const { palavras } = props;
 
-    const [habilitarLetra, setHabilitarLetra] = useState("letra-desabilitada");
+    const [habilitarTodasLetras, setHabilitarTodasLetras] = useState("letra-desabilitada");
+    const [letrasSelecionadas, setLetrasSelecionadas] = useState([]);
     const [palavraSorteada, setPalavraSorteada] = useState("");
     const [palavra, setPalavra] = useState([]);
     const [numErros, setNumErros] = useState(0);
@@ -20,10 +21,11 @@ function Jogo(props) {
     const [palavraRevelada, setPalavraRevelada] = useState("");
 
     function escolherPalavra() {
+        setLetrasSelecionadas([]);
         setNumErros(0);
         setImgForca(forca0);
         setPalavraRevelada("");
-        setHabilitarLetra("letra-habilitada");
+        setHabilitarTodasLetras("letra-habilitada");
 
         const indiceAleatorio = Math.floor(Math.random() * palavras.length);
         const novaPalavra = palavras[indiceAleatorio];
@@ -36,9 +38,12 @@ function Jogo(props) {
         }
         setPalavra(palavraSorteadaEscondida);
     }
-    console.log(palavraSorteada);
-    function letraSelecionada(letra) {
 
+    function letraSelecionada(letra) {
+        console.log(letra);
+        const novasLetrasSelecionadas = [...letrasSelecionadas, letra];
+        setLetrasSelecionadas(novasLetrasSelecionadas);
+        console.log(letrasSelecionadas);
         const letraMin = letra.toLowerCase();
         const palavraPreenchida = [];
 
@@ -56,7 +61,7 @@ function Jogo(props) {
             setPalavra(palavraPreenchida);
 
             if (!palavraPreenchida.includes("_ ")) {
-                setHabilitarLetra("letra-desabilitada");
+                setHabilitarTodasLetras("letra-desabilitada");
                 setPalavraRevelada("verde");
             }
 
@@ -70,7 +75,7 @@ function Jogo(props) {
             } else if (novoNumErros = 6) {
                 setNumErros(novoNumErros);
                 setImgForca(novaImgForca);
-                setHabilitarLetra("letra-desabilitada");
+                setHabilitarTodasLetras("letra-desabilitada");
                 setPalavra(palavraSorteada);
                 setPalavraRevelada("vermelho");
             }
@@ -99,11 +104,11 @@ function Jogo(props) {
             <div className="container-superior">
                 <img src={imgForca} alt="forca-inicial" data-test="game-image" />
                 <div className="container-direita">
-                    <button disabled={palavra.length === 0 || palavraRevelada === "verde" ? false : true} onClick={escolherPalavra} data-test="choose-word">Escolher Palavra</button>
+                    <button disabled={palavra.length === 0 || palavraRevelada !== "" ? false : true} onClick={escolherPalavra} data-test="choose-word">Escolher Palavra</button>
                     <div className={`palavra-escolhida ${palavraRevelada}`} data-test="word">{palavra}</div>
                 </div>
             </div>
-            <Letras habilitarLetra={habilitarLetra} letraSelecionada={letraSelecionada} />
+            <Letras habilitarTodasLetras={habilitarTodasLetras} letraSelecionada={letraSelecionada} letrasSelecionadas={letrasSelecionadas} />
         </div>
     )
 }
